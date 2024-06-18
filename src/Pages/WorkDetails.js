@@ -391,7 +391,7 @@ return (
     <div>
       <center>
       <div className="card lead" style={{width:"28rem"}} >
-  <div className="card-body">
+  <div className="card-body responsive">
     <h1 className="card-title">Rates and Ratio</h1>
     <h4 className="card-subtitle mb-2 text-muted">current data</h4>
     <h3>

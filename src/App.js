@@ -752,11 +752,18 @@
 
 
 import CutApp from './Pages/CutApp'
-
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Auth from './Auth'
 function App(){
   return(
     <div>
-      <CutApp />
+      <BrowserRouter>
+        <Routes>
+        <Route path="/" element={<Auth title='Work Details' /> }  />
+        <Route path="/DashBord/*" element={<CutApp title='Work Details' /> }  />
+
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

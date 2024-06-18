@@ -1,0 +1,84 @@
+/* SettingPage.css */
+
+.settings-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial, sans-serif';
+  text-align: center;
+}
+
+.user-details {
+  margin-bottom: 20px;
+}
+
+.user-details h2 {
+  margin-bottom: 10px;
+  font-size: 24px;
+  color: #333;
+}
+
+.user-details p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #666;
+}
+
+.free-trial-message, .active-status-message {
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.free-trial-message {
+  background-color: #fffbec;
+  border: 2px solid #ffeb3b;
+  color: #ff9800;
+}
+
+.free-trial-message h1 {
+  font-size: 28px;
+  color: #ff5722;
+  margin-bottom: 10px;
+}
+
+.free-trial-message p {
+  font-size: 18px;
+  color: #ff9800;
+}
+
+.active-status-message {
+  background-color: #e0f7fa;
+  border: 2px solid #4dd0e1;
+  color: #00796b;
+}
+
+.active-status-message h1 {
+  font-size: 28px;
+  color: #004d40;
+  margin-bottom: 10px;
+}
+
+.active-status-message p {
+  font-size: 18px;
+  color: #00796b;
+}
+
+.logout-button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #f44336;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f;
+}

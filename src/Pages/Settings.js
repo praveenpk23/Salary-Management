@@ -123,6 +123,7 @@ import "firebase/auth";
 import "firebase/compat/database";
 import "firebase/compat/storage";
 import '../App.css'
+import Account from './Account'
 const SettingPage = () => {
   const [deductionRatioNumerator, setDeductionRatioNumerator] = useState("");
   const [brickPrice, setBrickPrice] = useState("");
@@ -205,14 +206,20 @@ const SettingPage = () => {
   // };
   return (
     <center>
+
       <br />
+         
+       {/* <button className="btn btn-danger" onClick={handleLocalStorageClear}>Logout</button> */}
+       <Account />
+       <br/>
+       <hr/>
      {Loading?(<div style={{marginTop:"18%"}}>
       <center>
       <CircularProgress color="inherit" />    
       </center>
      </div>):(
        <Container>
-       <h1>Setting Page</h1>
+       <h1>Settings</h1>
        <Form style={{ width: "30%" }}>
          <Form.Group controlId="deductionRatioNumerator">
            <Form.Label>Deduction Ratio Numerator</Form.Label>
@@ -259,9 +266,9 @@ const SettingPage = () => {
        <h4>Salary</h4>
        <h4>{ShowBricks} Bricks {ShoeRate} rupees</h4>
        <br />
-       
-       {/* <button className="btn btn-danger" onClick={handleLocalStorageClear}>Logout</button> */}
-
+       <br />
+       <hr />
+    
      </Container>
      )}
     </center>

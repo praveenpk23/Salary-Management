@@ -32,20 +32,33 @@ const WorkerList = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Fetch workers data from Firestore
-    const unsubscribe = db.collection("workers").onSnapshot((querySnapshot) => {
-      const workerData = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setWorkers(workerData);
-      setLoading(false); // Set loading state to false when data is fetched
-    });
+  // useEffect(() => {
+  //   // Fetch workers data from Firestore
+  //   const unsubscribe = db.collection("workers").onSnapshot((querySnapshot) => {
+  //     const workerData = querySnapshot.docs.map((doc) => ({
+  //       id: doc.id,
+  //       ...doc.data(),
+  //     }));
+  //     setWorkers(workerData);
+  //     setLoading(false); // Set loading state to false when data is fetched
+  //   });
 
-    // Unsubscribe from real-time updates when the component unmounts
-    return () => unsubscribe();
+  //   // Unsubscribe from real-time updates when the component unmounts
+  //   return () => unsubscribe();
+  // }, []);
+  useEffect(() => {
+    const unsubscribe = db.collection("workers").onSnapshot((querySnapshot) => {
+      const workerData = [];
+      querySnapshot.forEach((doc) => {
+        workerData.push({ id: doc.id, ...doc.data() });
+      });
+      setWorkers(workerData);
+      setLoading(false);
+    });
+  
+    return unsubscribe; // Unsubscribe from real-time updates when the component unmounts
   }, []);
+  
 
   const handleEditWorker = (worker) => {
     // Set data of selected worker to input fields for editing
@@ -55,40 +68,68 @@ const WorkerList = () => {
     setPhoneNumber(worker.phoneNumber);
   };
 
-  // const handleUpdateWorker = () => {
-  //   // Update worker data in Firestore
-  //   db.collection("workers")
-  //     .doc(editWorkerId)
-  //     .update({
-  //       familyName,
-  //       headName,
-  //       phoneNumber,
-  //     })
-  //     .then(() => {
-  //       alert("Worker updated successfully!");
+ 
+  // const handleUpdateWorker = (worker) => {
+  //   if (familyName === worker.familyName) {
+  //     // Family name is the same, no need to update
+  //     setFamilyName("");
+  //     setHeadName("");
+  //     setPhoneNumber("");
+  //     setEditWorkerId(null);
+  //     return;
+  //   }
   
-  //       // Update the component state with the updated data
-  //       const updatedWorkers = workers.map((worker) =>
-  //         worker.id === editWorkerId
-  //           ? { ...worker, familyName, headName, phoneNumber }
-  //           : worker
-  //       );
-  //       setWorkers(updatedWorkers); // Update state with the updated data
+  //   const batch = db.batch();
   
-  //       // Reset input fields and edit mode after successful update
-  //       setFamilyName("");
-  //       setHeadName("");
-  //       setPhoneNumber("");
-  //       setEditWorkerId(null);
-  //     })
-  //     .catch((error) => {
-  //       alert("Error updating worker: ", error);
+  //   // Update worker data in "workers" collection
+  //   const workerRef = db.collection("workers").doc(worker.id);
+  //   workerRef.update(workerRef, {
+  //     familyName: familyName,
+  //     headName: headName,
+  //     phoneNumber: phoneNumber,
+  //   });
+  
+  //   // Update worker data in "payouts" collection
+  //   const payoutsRef = db.collection("payouts").where("familyName", "==", worker.familyName);
+  //   payoutsRef.get().then((snapshot) => {
+  //     snapshot.forEach((doc) => {
+  //       const payoutRef = db.collection("payouts").doc(doc.id);
+  //       batch.update(payoutRef, { familyName: familyName });
   //     });
+  
+  //     // Update worker data in "workDetails" collection
+  //     const workDetailsRef = db.collection("workDetails").where("familyName", "==", worker.familyName);
+  //     workDetailsRef.get().then((snapshot) => {
+  //       snapshot.forEach((doc) => {
+  //         const workDetailRef = db.collection("workDetails").doc(doc.id);
+  //         batch.update(workDetailRef, { familyName: familyName });
+  //       });
+  
+  //       batch
+  //         .commit()
+  //         .then(() => {
+  //           alert("Worker updated successfully!");
+  
+  //           const updatedWorkers = workers.map((w) =>
+  //             w.id === worker.id ? { ...w, familyName, headName, phoneNumber } : w
+  //           );
+  //           setWorkers(updatedWorkers);
+  
+  //           setFamilyName("");
+  //           setHeadName("");
+  //           setPhoneNumber("");
+  //           setEditWorkerId(null);
+  //         })
+  //         .catch((error) => {
+  //           alert("Error updating worker: " + error);
+  //         });
+  //     });
+  //   });
   // };
   
   const handleUpdateWorker = (worker) => {
-    if (familyName === worker.familyName) {
-      // Family name is the same, no need to update
+    if (familyName === worker.familyName && headName === worker.headName && phoneNumber === worker.phoneNumber) {
+      // Family name, head name, and phone number are the same, no need to update
       setFamilyName("");
       setHeadName("");
       setPhoneNumber("");
@@ -96,54 +137,61 @@ const WorkerList = () => {
       return;
     }
   
-    const batch = db.batch();
-  
     // Update worker data in "workers" collection
-    const workerRef = db.collection("workers").doc(worker.id);
-    batch.update(workerRef, {
-      familyName: familyName,
-      headName: headName,
-      phoneNumber: phoneNumber,
-    });
+    db.collection("workers")
+      .doc(worker.id)
+      .update({
+        familyName: familyName,
+        headName: headName,
+        phoneNumber: phoneNumber,
+      })
+      .then(() => {
+        alert("Worker updated successfully!");
+  
+        const updatedWorkers = workers.map((w) =>
+          w.id === worker.id ? { ...w, familyName, headName, phoneNumber } : w
+        );
+        setWorkers(updatedWorkers);
+  
+        setFamilyName("");
+        setHeadName("");
+        setPhoneNumber("");
+        setEditWorkerId(null);
+      })
+      .catch((error) => {
+        alert("Error updating worker: " + error);
+      });
   
     // Update worker data in "payouts" collection
-    const payoutsRef = db.collection("payouts").where("familyName", "==", worker.familyName);
-    payoutsRef.get().then((snapshot) => {
-      snapshot.forEach((doc) => {
-        const payoutRef = db.collection("payouts").doc(doc.id);
-        batch.update(payoutRef, { familyName: familyName });
+    db.collection("payouts")
+      .where("familyName", "==", worker.familyName)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          const payoutRef = db.collection("payouts").doc(doc.id);
+          payoutRef.update({ familyName: familyName });
+        });
+      })
+      .catch((error) => {
+        console.error("Error updating payouts:", error);
       });
   
-      // Update worker data in "workDetails" collection
-      const workDetailsRef = db.collection("workDetails").where("familyName", "==", worker.familyName);
-      workDetailsRef.get().then((snapshot) => {
+    // Update worker data in "workDetails" collection
+    db.collection("workDetails")
+      .where("familyName", "==", worker.familyName)
+      .get()
+      .then((snapshot) => {
         snapshot.forEach((doc) => {
           const workDetailRef = db.collection("workDetails").doc(doc.id);
-          batch.update(workDetailRef, { familyName: familyName });
+          workDetailRef.update({ familyName: familyName });
         });
-  
-        batch
-          .commit()
-          .then(() => {
-            alert("Worker updated successfully!");
-  
-            const updatedWorkers = workers.map((w) =>
-              w.id === worker.id ? { ...w, familyName, headName, phoneNumber } : w
-            );
-            setWorkers(updatedWorkers);
-  
-            setFamilyName("");
-            setHeadName("");
-            setPhoneNumber("");
-            setEditWorkerId(null);
-          })
-          .catch((error) => {
-            alert("Error updating worker: " + error);
-          });
+      })
+      .catch((error) => {
+        console.error("Error updating workDetails:", error);
       });
-    });
   };
   
+
   
 
   const handleDeleteWorker = (workerId) => {
@@ -176,7 +224,7 @@ const WorkerList = () => {
         <div className="row">
           <div className="col-md-6 offset-md-3">
             <h2 className="text-center">Worker List</h2>
-            <table className="table mt-3">
+            <table className="table-responsive mt-3">
               <thead>
                 <tr style={{margin:"20px"}}>
                   <th>Photo</th>
@@ -191,12 +239,22 @@ const WorkerList = () => {
                   <tr key={worker.id}>
                     <td>
                       <div className="rounded-circle overflow-hidden" style={{ width: "40px", height: "40px" }}>
-                        {loading?<CircularProgress/>:(<img
-                          src={worker.photo}
-                          alt="Worker"
-                          className="w-100 h-100 object-cover"
-                          style={{ borderRadius: "50%",width:"150%" }}
-                        />)}
+                      {worker.photo ? (
+  <img
+    src={worker.photo}
+    alt="Worker"
+    className="w-100 h-100 object-cover"
+    style={{ borderRadius: "50%" }}
+  />
+) : (
+  <div
+    className="w-100 h-100 d-flex justify-content-center align-items-center"
+    style={{ backgroundColor: "black", color: "white", borderRadius: "50%" }}
+  >
+    <span style={{ fontSize: "20px" }}>{worker.familyName.charAt(0)}</span>
+  </div>
+)}
+
                       </div>
                     </td>
                     <td>

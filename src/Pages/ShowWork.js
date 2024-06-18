@@ -113,7 +113,8 @@ const ShowWork = ({title}) => {
        {Object.entries(separatedFormData).map(([familyName, works]) => (
          <div key={familyName}>
            <h3>{familyName}</h3>
-           <table className="table">
+          <div className='table-responsive'>
+          <table className="table">
              <thead className="thead-dark">
                <tr>
                  <th>Date</th>
@@ -151,6 +152,7 @@ const ShowWork = ({title}) => {
                ))}
              </tbody>
            </table>
+          </div>
          </div>
        ))}
      </div>

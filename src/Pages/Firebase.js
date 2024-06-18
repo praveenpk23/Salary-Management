@@ -16,6 +16,7 @@
 
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import 'firebase/compat/auth'
 
 const firebaseConfig = {
   // your firebase config here

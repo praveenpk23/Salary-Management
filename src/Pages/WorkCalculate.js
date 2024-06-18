@@ -122,114 +122,114 @@ const WorkCalculate = () => {
 //     }
 // };
 
-// const handlePayBtnClick = async () => {
-//   try {
-//     // Calculate totalBricks and totalSalary for selectedFamilyName, excluding works with "status: 'paid'"
-//     const filteredWorkDetails = workDetails.filter(
-//       work => work.familyName === selectedFamilyName && work.status !== 'paid'
-//     );
-//     const totalBricks = filteredWorkDetails.reduce((acc, work, index) => {
-//       if (index < 6) {
-//         return acc + work.remainingBricks;
-//       } else {
-//         return acc;
-//       }
-//     }, 0);
-//     const totalSalary = filteredWorkDetails.reduce((acc, work, index) => {
-//       if (index < 6) {
-//         return acc + work.salary;
-//       } else {
-//         return acc;
-//       }
-//     }, 0);
-//     setTotalBricks(totalBricks);
-//     setTotalSalary(totalSalary);
+const handlePayBtnClick = async () => {
+  try {
+    // Calculate totalBricks and totalSalary for selectedFamilyName, excluding works with "status: 'paid'"
+    const filteredWorkDetails = workDetails.filter(
+      work => work.familyName === selectedFamilyName && work.status !== 'paid'
+    );
+    const totalBricks = filteredWorkDetails.reduce((acc, work, index) => {
+      if (index < 6) {
+        return acc + work.remainingBricks;
+      } else {
+        return acc;
+      }
+    }, 0);
+    const totalSalary = filteredWorkDetails.reduce((acc, work, index) => {
+      if (index < 6) {
+        return acc + work.salary;
+      } else {
+        return acc;
+      }
+    }, 0);
+    setTotalBricks(totalBricks);
+    setTotalSalary(totalSalary);
 
-//     // Update workDetails collection in Firestore with "status" field set to "paid" for first 6 pending works
-//     const batch = db.batch();
-//     let paidWorkCount = 0;
-//     filteredWorkDetails.forEach(work => {
-//       if (work.status === 'pending' && paidWorkCount < 6) {
-//         const workDocRef = db.collection('workDetails').doc(work.id);
-//         const updateData = {
-//           status: 'paid'
-//         };
-//         batch.update(workDocRef, updateData);
-//         paidWorkCount++;
-//       }
-//     });
-
-//     await batch.commit();
-
-//     // Create a payout document in Firestore
-//     const payoutDocRef = await db.collection('payouts').add({
-//       familyName: selectedFamilyName,
-//       dateFrom: workDates[0],
-//       dateTo: workDates[Math.min(workDates.length - 1, 6)], // Update to use first 6 workDates
-//       totalBricks,
-//       totalSalary,
-//       status: 'paid'
-//     });
-
-//     console.log('Payout document created with ID:', payoutDocRef.id);
-//     alert('Payment done successfully');
-//     setTotalBricks("");
-//     setTotalSalary("");
-//     setWorkDates("");
-    
-//     // Update available family names state after marking a family name as paid
-//     const remainingFamilyNames = [...new Set(workDetails.map(work => work.familyName).filter(name => !workDetails.some(work => work.familyName === name && work.paid)))];
-//     setSelectedFamilyName(remainingFamilyNames[0] || '');
-
-//   } catch (error) {
-//     console.error('Error updating workDetails:', error);
-//   }
-// };
-
-const handlePayClick = (familyName) => {
-  setLoader(true);
-  const filteredWorkDetails = workDetails.filter((work) => work.familyName === familyName && work.status === 'pending');
-
-  if (filteredWorkDetails.length === 0) {
-    return;
-  }
-
-  const batch = writeBatch(db);
-  const payoutDocRef = doc(collection(db, 'payouts'));
-
-  // Get the dates of the first 6 works to be paid
-  const workDates = filteredWorkDetails.slice(0, 6).map((work) => new Date(work.date));
-  
-  const startDate = workDates[0].toLocaleDateString('en-US');
-  const endDate = workDates[Math.min(workDates.length - 1, 6)].toLocaleDateString('en-US');
-
-  const totalSalary = filteredWorkDetails.reduce((acc, work) => acc + work.salary, 0);
-  const totalBricks = filteredWorkDetails.reduce((acc, work) => acc + work.remainingBricks, 0);
-
-  batch.set(payoutDocRef, {
-    dateFrom: startDate,
-    dateTo: endDate,
-    familyName,
-    status: 'paid',
-    totalBricks,
-    totalSalary
-  });
-
-  filteredWorkDetails.forEach((work) => {
-    const workDocRef = doc(collection(db, 'workDetails'), work.id);
-    batch.update(workDocRef, { status: 'paid' });
-  });
-
-  batch.commit()
-    .then(() => {
-      console.log('Work status updated successfully and payouts stored!');
-      setLoader(false);
-    })
-    .catch((error) => {
-      console.error('Error updating work status and storing payouts: ', error);
-      setLoader(false);
+    // Update workDetails collection in Firestore with "status" field set to "paid" for first 6 pending works
+    const batch = db.batch();
+    let paidWorkCount = 0;
+    filteredWorkDetails.forEach(work => {
+      if (work.status === 'pending' && paidWorkCount < 6) {
+        const workDocRef = db.collection('workDetails').doc(work.id);
+        const updateData = {
+          status: 'paid'
+        };
+        batch.update(workDocRef, updateData);
+        paidWorkCount++;
+      }
     });
+
+    await batch.commit();
+
+    // Create a payout document in Firestore
+    const payoutDocRef = await db.collection('payouts').add({
+      familyName: selectedFamilyName,
+      dateFrom: workDates[0],
+      dateTo: workDates[Math.min(workDates.length - 1, 6)], // Update to use first 6 workDates
+      totalBricks,
+      totalSalary,
+      status: 'paid'
+    });
+
+    console.log('Payout document created with ID:', payoutDocRef.id);
+    alert('Payment done successfully');
+    setTotalBricks("");
+    setTotalSalary("");
+    setWorkDates("");
+    
+    // Update available family names state after marking a family name as paid
+    const remainingFamilyNames = [...new Set(workDetails.map(work => work.familyName).filter(name => !workDetails.some(work => work.familyName === name && work.paid)))];
+    setSelectedFamilyName(remainingFamilyNames[0] || '');
+
+  } catch (error) {
+    console.error('Error updating workDetails:', error);
+  }
 };
+
+// const handlePayClick = (familyName) => {
+//   setLoader(true);
+//   const filteredWorkDetails = workDetails.filter((work) => work.familyName === familyName && work.status === 'pending');
+
+//   if (filteredWorkDetails.length === 0) {
+//     return;
+//   }
+
+//   const batch = writeBatch(db);
+//   const payoutDocRef = doc(collection(db, 'payouts'));
+
+//   // Get the dates of the first 6 works to be paid
+//   const workDates = filteredWorkDetails.slice(0, 6).map((work) => new Date(work.date));
+  
+//   const startDate = workDates[0].toLocaleDateString('en-US');
+//   const endDate = workDates[Math.min(workDates.length - 1, 6)].toLocaleDateString('en-US');
+
+//   const totalSalary = filteredWorkDetails.reduce((acc, work) => acc + work.salary, 0);
+//   const totalBricks = filteredWorkDetails.reduce((acc, work) => acc + work.remainingBricks, 0);
+
+//   batch.set(payoutDocRef, {
+//     dateFrom: startDate,
+//     dateTo: endDate,
+//     familyName,
+//     status: 'paid',
+//     totalBricks,
+//     totalSalary
+//   });
+
+//   filteredWorkDetails.forEach((work) => {
+//     const workDocRef = doc(collection(db, 'workDetails'), work.id);
+//     batch.update(workDocRef, { status: 'paid' });
+//   });
+
+//   batch.commit()
+//     .then(() => {
+//       console.log('Work status updated successfully and payouts stored!');
+//       setLoader(false);
+//     })
+//     .catch((error) => {
+//       console.error('Error updating work status and storing payouts: ', error);
+//       setLoader(false);
+//     });
+// };
   
   
 

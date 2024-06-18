@@ -52,7 +52,9 @@ const PayoutsPage = () => {
     </center>
     </div>):(
        <div className="container mt-4">
-       <h1>Payouts</h1>
+        <center>
+        <h1>Payouts</h1>
+        </center>
        <div className="table-responsive">
          <table className="table table-bordered table-hover">
            <thead className="thead-dark">
