@@ -46,7 +46,7 @@ const PayoutsPage = () => {
 
   return (
    <div>
-    {loading?(<div style={{marginTop:'1%'}}>
+    {loading?(<div style={{marginTop:'5%'}}>
     <center>
       <LinearProgress disableShrink color='inherit' />
     </center>

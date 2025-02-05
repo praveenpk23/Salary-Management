@@ -210,7 +210,7 @@ const SettingPage = () => {
       <br />
          
        {/* <button className="btn btn-danger" onClick={handleLocalStorageClear}>Logout</button> */}
-       <Account />
+       {/* <Account /> */}
        <br/>
        <hr/>
      {Loading?(<div style={{marginTop:"18%"}}>

@@ -28,28 +28,28 @@ function Mysidebar() {
         <hr />
         <Offcanvas.Body>
           <ul className="list-group list-group-flush">
-            <NavLink exact to="/DashBord" className="list-group-item list-group-item-action" style={{marginBottom:"30px"}} activeClassName="active dark" onClick={handleClose}>
+            <NavLink exact to="/" className="list-group-item list-group-item-action" style={{marginBottom:"30px"}} activeClassName="active dark" onClick={handleClose}>
               Add work
             </NavLink>
             <br /><br />
-            <NavLink to="/DashBord/ShowWork" className="list-group-item list-group-item-action" style={{marginBottom:"30px"}} activeClassName="active" onClick={handleClose}>
+            <NavLink to="/ShowWork" className="list-group-item list-group-item-action" style={{marginBottom:"30px"}} activeClassName="active" onClick={handleClose}>
               Show Work
             </NavLink>
             <br /><br />
-            <NavLink to="/DashBord/AddWorker" className="list-group-item list-group-item-action" style={{marginBottom:"30px"}} activeClassName="active" onClick={handleClose}>
+            <NavLink to="/AddWorker" className="list-group-item list-group-item-action" style={{marginBottom:"30px"}} activeClassName="active" onClick={handleClose}>
               Add Worker
             </NavLink>
             <br/><br />
-            <NavLink to="/DashBord/workcalculate" className="list-group-item list-group-item-action" style={{marginBottom:"30px"}} activeClassName="active" onClick={handleClose}>
+            <NavLink to="/workcalculate" className="list-group-item list-group-item-action" style={{marginBottom:"30px"}} activeClassName="active" onClick={handleClose}>
              Calculate work and pay
             </NavLink>
             <br /><br />
-            <NavLink to="/DashBord/payoutspage" className="list-group-item list-group-item-action" style={{marginBottom:"30px"}} activeClassName="active" onClick={handleClose}>
+            <NavLink to="/payoutspage" className="list-group-item list-group-item-action" style={{marginBottom:"30px"}} activeClassName="active" onClick={handleClose}>
              Payment history
             </NavLink>
             <br /><br />
             
-            <NavLink to="/DashBord/settings" className="list-group-item list-group-item-action"  activeClassName="active" onClick={handleClose}>
+            <NavLink to="/settings" className="list-group-item list-group-item-action"  activeClassName="active" onClick={handleClose}>
              Settings
             </NavLink>
             <hr />

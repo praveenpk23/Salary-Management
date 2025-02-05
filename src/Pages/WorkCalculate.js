@@ -7,18 +7,18 @@ import 'firebase/compat/firestore';
 import { Dropdown, Button } from 'react-bootstrap';
 import PayoutsPage from './PayoutsPage';
 // Initialize Firebase app with your Firebase configuration
-const firebaseConfig = {
-  // Your Firebase configuration goes here
-  apiKey: "AIzaSyBLAe1He5yd6hXHs9vyipXWUFiFAQLUye0",
-  authDomain: "rvrbrick.firebaseapp.com",
-  projectId: "rvrbrick",
-  storageBucket: "rvrbrick.appspot.com",
-  messagingSenderId: "182259489957",
-  appId: "1:182259489957:web:7015f8b5a08c11adf3014c",
-  measurementId: "G-Z64Q4BV7PB"
-};
+// const firebaseConfig = {
+//   // Your Firebase configuration goes here
+//   apiKey: "AIzaSyBLAe1He5yd6hXHs9vyipXWUFiFAQLUye0",
+//   authDomain: "rvrbrick.firebaseapp.com",
+//   projectId: "rvrbrick",
+//   storageBucket: "rvrbrick.appspot.com",
+//   messagingSenderId: "182259489957",
+//   appId: "1:182259489957:web:7015f8b5a08c11adf3014c",
+//   measurementId: "G-Z64Q4BV7PB"
+// };
 
-firebase.initializeApp(firebaseConfig);
+// firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 const WorkCalculate = () => {
@@ -243,7 +243,7 @@ const getDaysWorked = () => {
  // Render component JSX
 return  (
 <center>
-  <br /><br />
+  <br /><br /><br />
 <div>
     {/* Render family name select options */}
     <Dropdown>

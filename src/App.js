@@ -211,56 +211,56 @@
 
 
   //////////////////////////////////////////////////////////////////////////
-// import React, { Component } from 'react';
-// import CutApp from './Pages/CutApp';
-// import './App.css';
+import React, { Component } from 'react';
+import CutApp from './Pages/CutApp';
+import './App.css';
 
-// class ErrorBoundary extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       hasError: false
-//     };
-//   }
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasError: false
+    };
+  }
 
-//   componentDidCatch(error, info) {
-//     console.log('Error:', error);
-//     console.log('Info:', info);
-//     this.setState({ hasError: true });
-//   }
+  componentDidCatch(error, info) {
+    console.log('Error:', error);
+    console.log('Info:', info);
+    this.setState({ hasError: true });
+  }
 
-//   render() {
-//     if (this.state.hasError) {
-//       return (
-//        <div style={{marginTop:"15%"}}>
-//         <center>
-//         <div>
-//           <h1>Something went wrong</h1>
-//           <h2>Please contact Workfys Infotech for assistance</h2>
-//           <h3>Contact: 9385325892</h3>
-//         </div>
-//         </center>
-//        </div>
-//       );
-//     }
+  render() {
+    if (this.state.hasError) {
+      return (
+       <div style={{marginTop:"15%"}}>
+        <center>
+        <div>
+          <h1>Something went wrong</h1>
+          <h2>Please contact Workfys Infotech for assistance</h2>
+          <h3>Contact: 9385325892</h3>
+        </div>
+        </center>
+       </div>
+      );
+    }
 
-//     return this.props.children;
-//   }
-// }
+    return this.props.children;
+  }
+}
 
-// class App extends Component {
-//   render() {
-//     return (
-//       <div>
-//         <ErrorBoundary>
-//           <CutApp />
-//         </ErrorBoundary>
-//       </div>
-//     );
-//   }
-// }
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <ErrorBoundary>
+          <CutApp />
+        </ErrorBoundary>
+      </div>
+    );
+  }
+}
 
-// export default App;
+export default App;
 
 
 
@@ -751,21 +751,21 @@
 // export default App;
 
 
-import CutApp from './Pages/CutApp'
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Auth from './Auth'
-function App(){
-  return(
-    <div>
-      <BrowserRouter>
-        <Routes>
-        <Route path="/" element={<Auth title='Work Details' /> }  />
-        <Route path="/DashBord/*" element={<CutApp title='Work Details' /> }  />
+// import CutApp from './Pages/CutApp'
+// import { BrowserRouter, Route, Routes } from 'react-router-dom';
+// import Auth from './Auth'
+// function App(){
+//   return(
+//     <div>
+//       <BrowserRouter>
+//         <Routes>
+//         {/* <Route path="/" element={<Auth title='Work Details' /> }  /> */}
+//         <Route path="/" element={<CutApp title='Work Details' /> }  />
 
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
-}
+//         </Routes>
+//       </BrowserRouter>
+//     </div>
+//   );
+// }
 
-export  default App;
+// export  default App;

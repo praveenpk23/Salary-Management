@@ -243,9 +243,9 @@ const Login = () => {
                     Resend OTP in {resendCountdown} seconds
                   </p>
                 )}
-                {/* <button onClick={handleChangeNumber} className="change-number-button">
+                <button onClick={handleChangeNumber} className="change-number-button">
                   Change Number
-                </button> */}
+                </button>
               </div>
             )}
           </form>

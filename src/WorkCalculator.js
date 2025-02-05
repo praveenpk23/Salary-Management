@@ -9,15 +9,28 @@ import { ToastContainer } from 'react-bootstrap';
 const  WorkCalculator=()=> {
   const [workDetails, setWorkDetails] = useState([]);
   const[Loader,setLoader]=useState(true);
+  // useEffect(() => {
+  //   const unsubscribe = onSnapshot(collection(db, 'workDetails'), (snapshot) => {
+  //     const data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+  //     setWorkDetails(data);
+  //     setLoader(false);
+  //   });
+  
+  //   return unsubscribe;
+  // }, []);
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'workDetails'), (snapshot) => {
-      const data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      setWorkDetails(data);
-      setLoader(false);
-    });
+    const unsubscribe = onSnapshot(
+      collection(db, 'workDetails'), 
+      snapshot => {
+        const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        setWorkDetails(data);
+        setLoader(false);
+      }
+    );
   
     return unsubscribe;
   }, []);
+  
 
   const calculateTotalSalary = (familyName) => {
     const filteredWorkDetails = workDetails.filter((work) => work.familyName === familyName && work.status === 'pending');
@@ -221,7 +234,7 @@ return(
       
   
       return (
-        <div key={familyName}>
+        <div key={familyName} style={{marginTop:"50px"}}>
           <h2>{familyName}</h2>
           <table className="table table-striped table-bordered">
             <thead className="thead-dark">
